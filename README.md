@@ -3,7 +3,7 @@ The SmartJs Realtime Mobile Application Framework
 
 SmartJs is an acronym that stands for
 
-**S**OLID **A**MD **M**VVM **R**eal**t**ime **j**Query Mobile **S**PA
+**S**OLID **M**VVM **A**MD **R**eal**t**ime **j**Query Mobile **S**PA
 What's that mean?  [I have a website that attempts to explain it.](http://www.programico.com/smartjs.html)
 
 Patterns and Practices
@@ -60,4 +60,4 @@ Todo
 * Demonstrate Client to Client PM feature
 * Demonstrate Phonegap API around a device feature, probaby camera, so implement chat room picture feature
 * More unit testing
-See the full [TODO.md](./planning/TODO.md) checked into the github project
+See the full [TODO.md](./smartjs/planning/TODO.md) checked into the github project
