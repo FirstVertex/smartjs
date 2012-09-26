@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+    <title>Unit Test :: server</title>
+
+    <!-- Include the Jasmine assets for running in an HTML page. -->
+    <link rel="stylesheet" type="text/css" href="lib/jasmine.css"></link>
+    <script type="text/javascript" src="lib/jasmine.js"></script>
+    <script type="text/javascript" src="lib/jasmine-html.js"></script>
+
+    <script type="text/javascript" src="../../Client/lib/require.js"></script>
+
+    <!--
+        Use RequireJS to load and execute the actual Jasmine test
+        specifications (ie. specs).
+
+        NOTE: We have to use the domReady! plugin since the Jasmine
+        reporter needs to have access to the BODY tag of the document
+        when outputting the results of the test.
+    -->
+    <script type="text/javascript">
+
+        require.config({
+            baseUrl: '../../Client/app',
+            paths: {
+                // alias all libs for easier versioning
+                jquery: "../lib/jquery-1.8.0",
+                jqueryMobile: "../lib/jquery.mobile-1.2.0-alpha.1",
+                jstorage: "../lib/jstorage",
+                pubsub: "../lib/jquery.pubsub",
+                knockout: "../lib/knockout-2.1.0",
+                now: "../lib/now",
+                phonegap: "../lib/cordova-2.0.0",
+                underscore: "../lib/lodash.custom",
+                domReady: "../../QA/UnitTest/lib/domReady",
+
+                // the model under test
+                model: "server",
+                // the test specification
+                testSpec: "../../QA/UnitTest/spec/server"
+            }
+        });
+        require(
+            [
+                "domReady!",
+                "testSpec"
+            ],
+            function (document) {
+
+                // Set up the HTML reporter - this is reponsible for
+                // aggregating the results reported by Jasmine as the
+                // tests and suites are executed.
+                jasmine.getEnv().addReporter(
+                    new jasmine.HtmlReporter()
+                );
+
+                // Run all the loaded test specs.
+                jasmine.getEnv().execute();
+
+            }
+        );
+
+    </script>
+
+</head>
+<body>
+    <!-- Left intentionally blank. -->
+</body>
+</html>

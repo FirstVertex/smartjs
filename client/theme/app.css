@@ -1,0 +1,35 @@
+﻿html,body { overflow: hidden; background-color: #1985D0; }
+.errorMessage {color: red; font-size:small; font-weight:bold; font-style:italic}
+.successMessage {color: green;}
+.chatMessages { text-shadow: none; color:#222; font: small Consolas, Courier New, monospace; overflow-y: auto; background: white; padding: 8px; border:1px solid #aaa}
+.memberIsTyping { color: #07d945; font-style:italic }
+#userControls {display:none}
+/* prevents distracting flicker before jqm is loaded async */
+[data-role="page"] {display:none}
+
+/* height will be set to 100% of screen minus header/footer by script */
+[data-role="content"] { padding:0; margin:0; overflow: hidden; position:relative }
+
+/*
+.rootPage 
+*/
+
+.contentPadding {position:absolute; top:0; left:0; bottom:0; right:0; padding:8px; overflow-y: auto;}
+
+.edgeGlueContainer {position:relative; height:100%; padding:0; margin:0}
+.edgeGlued {position:absolute; top:0; left:0; bottom:0; right:0;}
+.scrollY { overflow-y: auto; }
+
+/*splash screen*/
+.rootPage {width:100%; height:100%; overflow: hidden; position: relative}
+.rootPage [data-role="content"] {background-color: #1985D0; padding:0; margin:0; overflow: hidden; position: absolute; left:0; top:0; right:0; bottom:0}
+#splashCon {position: absolute; top: 50%; margin-top: -25px; width: 100%; height: 50px;}
+#loadingWords {position: absolute; bottom: 0; right: 0; left: 0; height: 20px; text-align: center; color: #FFFFFF; opacity: 0.8;}
+#appLoadingIndicator {position: absolute; top: 0; right: 0; left: 0; height: 30px; text-align: center;
+	-webkit-animation-name: appLoadingIndicator; -webkit-animation-duration: 0.5s; -webkit-animation-iteration-count: infinite; -webkit-animation-direction: linear;}
+#appLoadingIndicator > * {background-color: #FFFFFF; display: inline-block; height: 30px; -webkit-border-radius: 15px; margin: 0 5px; width: 30px; opacity: 0.8;}
+@-webkit-keyframes appLoadingIndicator {
+	0% {opacity: 0.8;}
+    50% {opacity: 0;}
+    100% {opacity: 0.8; }
+}

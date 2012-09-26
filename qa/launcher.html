@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Mobile App Launcher</title>
+    <style type="text/css">
+        body, ul, li, a { font-family: Arial, sans-serif }
+        li { margin-bottom: 5px }
+    </style>
+    <script type="text/javascript">
+        var winWidth = 380;
+        var winHeight = 540;
+        var chromeWidth = 16;
+        var appUrl = "http://localhost:97/?config="
+        
+        function launch(what, howMany) {
+            var launchUrl = appUrl + what;
+            var launchOptions = "resizable=yes, scrollbars=yes, titlebar=yes, location=1, status=1, height=" + winHeight + ", width=" + winWidth + ", ";
+            var loc = "top=1, left=200";
+
+            if (what === 'web') {
+                window.open(launchUrl, 'ldLaunch' + what, launchOptions + loc);
+            } else {
+                var numAcross = Math.floor((screen.width + chromeWidth) / winWidth);
+                
+                var curDown = 0;
+
+                for (var j = 0; j < howMany; j++) {
+                    setTimeout(function (i) {
+                        var curLeft = 1 + (i % numAcross) * (winWidth + chromeWidth);
+                        var curTop = 1 + Math.floor(i / numAcross) * winHeight;
+                        var loc = "top=" + curTop + ", left=" + curLeft;
+                        console.log('launching with name=' + what + i + ' and options=' + launchOptions + loc);
+                        window.open(launchUrl, 'ldLaunch' + what + i, launchOptions + loc);
+                    }, (j + 1) * 250, j);
+                }
+            }
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <ul>
+        <li><a href="#" onclick="return launch('web')">Launch One app with Web Dev Config</a></li>
+        <li><a href="#" onclick="return launch('test',1)">Launch One app with Test Config</a></li>
+        <li><a href="#" onclick="return launch('test',2)">Launch 2 apps with Test Config</a></li>
+        <li><a href="#" onclick="return launch('test',3)">Launch 3 apps with Test Config</a></li>
+        <li><a href="#" onclick="return launch('test',4)">Launch 4 apps with Test Config</a></li>
+        <li><a href="#" onclick="return launch('test',5)">Launch 5 apps with Test Config</a></li>
+        <li><a href="#" onclick="return launch('test',6)">Launch 6 apps with Test Config</a></li>
+        <li><a href="#" onclick="return launch('test',7)">Launch 7 apps with Test Config</a></li>
+        <li><a href="#" onclick="return launch('test',8)">Launch 8 apps with Test Config</a></li>
+    </ul>
+</body>
+</html>

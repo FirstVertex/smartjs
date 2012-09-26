@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>SmartJs</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="theme/jquery.mobile-1.2.0-alpha.1.css" />
+    <link rel="stylesheet" href="theme/app.css" />
+    <script data-main="app/bootstrap" src="lib/require.js"></script>
+</head>
+<body>
+	<div data-role="page" id="splash" class="rootPage">
+		<div data-role="content">
+			<div id="splashCon">
+				<div id="appLoadingIndicator">
+		            <div></div>
+		            <div></div>
+		            <div></div>
+		        </div>
+		        <div id="loadingWords">Loading...</div>
+	        </div>
+		</div>
+	</div>
+	
+	<div data-role="page" id="newMember">
+		<div data-role="content">
+	        <div class="contentPadding">
+			    <h4>
+				    Welcome, please enter your name
+			    </h4>
+			    <form action="#" data-ajax="false" data-bind="submit: save">
+				    <div data-role="fieldcontain">
+					    <fieldset data-role="controlgroup">
+	                        <input data-bind="value: memberName" type="text" id="memberName" name="memberName" placeholder="Your Name" />
+	                        <div data-bind="visible: checkingMemberName">Checking Member name...</div>
+	                        <div data-bind="visible: invalidMemberName" class="errorMessage">Invalid Member name. Please try again.</div>
+	                        <div data-bind="template: { name: 'errorMessages-template', data: errorMessages }"></div>
+	                        <div data-bind="visible: goodMemberName" class="successMessage">Member successfully created...</div>
+					    </fieldset>
+				    </div>
+				    <input type="submit" data-icon="plus" data-iconpos="right" value="Sign Up">
+			    </form>
+	        </div>
+		</div>
+	</div>
+	
+	<div data-role="page" id="topics">
+		<div data-theme="b" data-role="header" data-position="fixed">
+			<h3>
+				Select Chat Topic
+			</h3>
+		</div>
+		<div data-role="content">
+	        <div class="contentPadding">
+			    <ul data-role="listview" data-divider-theme="b" data-inset="true">
+	                <li data-role="list-divider" role="heading">
+					    Chat Topics
+				    </li>
+	            <!-- ko foreach: topics, refreshListview: true
+	             --><li data-theme="c">
+					    <a data-bind="click: $parent.pickTopic"><span data-bind="text: topicName"></span> <span class="ui-li-count" data-bind="text: memberCount"></span></a>
+	                </li><!-- /ko -->
+			    </ul>
+	            <div data-bind="visible: loadingTopics" class="successMessage">Loading Topics...</div>
+	            <div data-bind="visible: enteringChatRoom" class="successMessage">Joining Topic Chat...</div>
+	            <div data-bind="with: addTopicViewModel">
+	                <input type="button" data-icon="plus" data-iconpos="right" value="Add New Topic" data-bind="click: toggleVisibile">
+	                <div data-bind="visible: isVisible">
+	                    <form action="#" data-ajax="false" data-bind="submit: addNewTopic">
+				            <div data-role="fieldcontain">
+					            <fieldset data-role="controlgroup">
+	                                <input data-bind="value: newTopicName" type="text" id="newTopicName" name="newTopicName" placeholder="New Topic Name" />
+	                                <div data-bind="visible: checkingTopicName">Creating Topic Chat room...</div>
+	                                <div data-bind="visible: invalidTopicName" class="errorMessage">Invalid topic name. Please try again.</div>
+	                                <div data-bind="template: { name: 'errorMessages-template', data: errorMessages }"></div>
+					            </fieldset>
+				            </div>
+				            <input type="submit" data-icon="plus" data-iconpos="right" value="Create Topic">
+			            </form>
+	                </div>
+	            </div>
+	        </div>
+		</div>
+	</div>
+	
+	<div data-role="page" id="chat">
+		<div data-theme="b" data-role="header" data-position="fixed">
+			<h3><span data-bind="text: roomName"></span> Chat</h3>
+			<a href="#topics" data-icon="delete" data-iconpos="notext" data-direction="reverse" class="ui-btn-right">Exit</a>
+		</div>
+		<div data-role="content">
+	        <div style="width:66%; float:left" class="edgeGlueContainer">
+	            <small style="margin-left:16px">Chatroom Messages</small>
+	            <div data-theme="c" class="ui-btn-corner-all chatMessages edgeGlued scrollY" style="margin:19px 8px 4px 8px">
+	                <!-- ko foreach: chatMessages --><div class="chatLine">
+	                <b class="memberName"><span data-bind="text: memberName"></span>&gt;</b> <span data-bind="text: words"></span>
+	                </div><!-- /ko -->
+	            </div>
+	        </div>
+	        <div style="width:34%; float:left" class="edgeGlueContainer scrollY">
+	            <ul class="edgeGlued" data-role="listview" data-theme="c" data-divider-theme="c" style="margin:0; border:0">
+	                <li data-role="list-divider" role="heading" style="border:0">
+					    Members
+				    </li>
+	            <!-- ko foreach: members, refreshListview: true
+	                --><li style="padding:.3em">
+	                    <span data-bind="text: memberName, css: { memberIsTyping: isTyping }"></span>
+	                </li><!-- /ko -->
+			    </ul>
+	        </div>
+	        <div style="clear:both"></div>
+		</div>
+	    <div data-theme="c" data-role="footer" data-position="fixed" style="white-space:nowrap; border:0">
+	        <form action="#" data-ajax="false" data-bind="submit: sayChat">
+		        <div style="width:80%; float:left; padding:0 .3em">
+	                <input type="text" data-mini="true" data-bind="value: currentChatInput, valueUpdate: 'afterkeydown'" placeholder="chat" />
+	            </div>
+	            <div style="float:left">
+	                <input type="submit" value="Send" data-mini="true" data-inline="true" />
+	            </div>
+	        </form>
+	    </div>
+	</div>
+	
+	<div id="userControls">
+	    <script type="text/html" id="errorMessages-template">
+	        <ul class="errorMessage" data-bind="foreach: $data">
+	            <li data-bind="text: $data"></li>
+	        </ul>
+	    </script>
+	</div>
+</body>
+</html>

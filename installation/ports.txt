@@ -1,0 +1,6 @@
+﻿Ports used by SmartJs
+
+97  the client.  served by Apache and pointed to C:\dev\smartjs\client
+98	the mongodb server
+99	the nowjs server
+100	the qa testing site.  served by Apache and pointed to C:\dev\smartjs
