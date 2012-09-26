@@ -3,7 +3,7 @@ The SmartJs Realtime Mobile Application Framework
 
 SmartJs is an acronym that stands for
 
-**S**OLID **M**VVM **A**MD **R**eal**t**ime **j**Query Mobile **S**PA
+**S**OLID **M**VVM **A**MD **R**eal **T**ime **j**QueryMobile **S**PA
 What's that mean?  [I have a website that attempts to explain it.](http://www.programico.com/smartjs.html)
 
 Patterns and Practices
