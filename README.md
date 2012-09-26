@@ -60,4 +60,4 @@ Todo
 * Demonstrate Client to Client PM feature
 * Demonstrate Phonegap API around a device feature, probaby camera, so implement chat room picture feature
 * More unit testing
-See the full [TODO.md](./smartjs/planning/TODO.md) checked into the github project
+See the full [TODO.md](./smartjs/blob/master/planning/TODO.md) checked into the github project
