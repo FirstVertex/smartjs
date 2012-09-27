@@ -1,6 +1,5 @@
 #Ignore built files written by r.js
 android/*
-debug/*
 iphone/*
 tablet/*
 web/*
