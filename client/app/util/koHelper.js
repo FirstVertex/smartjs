@@ -11,45 +11,14 @@ define([
     'util/logger'
 ], function (Ko, Jquery, Logger) {
 
-    var visibleCheckTimer = null;
-
-    function fixWhenVisible(ul) {
-        Logger.logCurrentFunction();
-        if (ul.is(':visible')) {
-            if (visibleCheckTimer) {
-                clearInterval(visibleCheckTimer);
-                visibleCheckTimer = null;
-            }
-            fixListview(ul);
-        } else {
-            if (!visibleCheckTimer) {
-                visibleCheckTimer = setInterval(function () {
-                    fixWhenVisible(ul);
-                }, 50);
-            }
-        }
-    }
-
-    function fixListview(ul) {
-        try {
-            ul.listview('refresh');
-            Logger.log('refreshListview.refresh');
-        }
-        catch (ex) {
-            try {
-                ul.listview();
-                Logger.log('refreshListview.create');
-            }
-            catch (ex2) {
-                Logger.log('refreshListview.nothing');
-            }
-        }
-    }
-
     Ko.bindingHandlers.refreshListview = {
-        update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-            var ul = (element.nodeName === 'UL') ? Jquery(element) : Jquery(element).closest('ul');
-            fixWhenVisible(ul);
+        update: function (element, valueAccessor) {
+            Ko.utils.unwrapObservable(valueAccessor()); //just to create a dependency
+            if (!element) return;
+            Logger.log('Ko.bindingHandlers.refreshListview.update() > element.nodeName', element.nodeName);
+            var ul = (element.nodeName === 'UL') ? Jquery(element) : Jquery(Ko.virtualElements.firstChild(element)).closest('ul');
+            if (!ul || !ul.length) return;
+            setTimeout(function (ul) { ul.listview('refresh'); }, 0, ul);
         }
     };
 

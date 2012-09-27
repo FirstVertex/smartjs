@@ -32,8 +32,9 @@ requirejs.config({
 require([
     'require',
     'config',
-    'jquery'
-], function (Require, Config, Jquery) {
+    'jquery',
+    'jqueryMobile'
+], function (require, Config, Jquery) {
 
     var isDeviceReady = false,
         isDocReady = false,
@@ -42,7 +43,7 @@ require([
     function checkLaunchConditions() {
         if (!isLaunched && isDeviceReady && isDocReady) {
             isLaunched = true;
-            Require([
+            require([
                 'util/storage',
                 'util/logger',
                 'util/pubsub',
@@ -71,11 +72,12 @@ require([
             checkLaunchConditions();
         }, false);
         // phonegap will send out deviceready event
-        Require(['phonegap']);
+        require(['phonegap']);
     }
 
     // listen for doc ready
     Jquery(document).ready(function () {
+        console.log('docready');
         isDocReady = true;
         checkLaunchConditions();
     });

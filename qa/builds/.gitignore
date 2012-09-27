@@ -1,0 +1,5 @@
+#Ignore built files written by r.js
+android/*
+iphone/*
+tablet/*
+web/*

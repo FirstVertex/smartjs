@@ -8,9 +8,8 @@
 define([
     'jstorage',
     'config',
-    'require',
     'util/pubsub'
-], function (Storage, Config, Require, Pubsub) {
+], function (Storage, Config, Pubsub) {
     
     var keys = {
         MEMBER: 'member'

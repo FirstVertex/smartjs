@@ -13,7 +13,7 @@ define([
     'jqueryMobile',
     'knockout',
     'config'
-], function (Pages, Pubsub, Require, Jquery, Mobile, Ko, Config) {
+], function (Pages, Pubsub, require, Jquery, Mobile, Ko, Config) {
     
     function gotoPage(page) {
         Mobile.changePage(page);
@@ -25,7 +25,7 @@ define([
         if (_boundNewMemberPage) {
             callback(_boundNewMemberPage);
         } else {
-            Require(['member/newMemberPageViewModel'], function (Model) {
+            require(['member/newMemberPageViewModel'], function (Model) {
                 Ko.applyBindings(Model, Pages.newMember.get(0));
                 _boundNewMemberPage = Pages.newMember;
                 callback(_boundNewMemberPage);
@@ -43,7 +43,7 @@ define([
         if (_boundTopicListPage) {
             callback(_boundTopicListPage);
         } else {
-            Require(['topic/topicListPageViewModel'], function (Model) {
+            require(['topic/topicListPageViewModel'], function (Model) {
                 Ko.applyBindings(Model, Pages.topicList.get(0));
                 _boundTopicListPage = Pages.topicList;
                 callback(_boundTopicListPage);
@@ -63,7 +63,7 @@ define([
             chatRoom.init(roomName);
             callback(_boundChatRoomPage);
         } else {
-            Require(['chat/chatRoomViewModel'], function (Model) {
+            require(['chat/chatRoomViewModel'], function (Model) {
                 chatRoom = Model;
                 chatRoom.init(roomName);
                 Ko.applyBindings(Model, Pages.chatPage.get(0));

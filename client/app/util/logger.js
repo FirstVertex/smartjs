@@ -12,7 +12,7 @@ define([
     var showMessages = Config.showConsoleMessages;
 
     function log (message, obj, showCurrentFunction) {
-        if (!showMessages) return;
+        if (!showMessages || !console) return;
 
         var formattedMessage = showCurrentFunction ?
             "> function {0}()".format(arguments.callee.caller.name) :
