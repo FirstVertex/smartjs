@@ -1,6 +1,6 @@
 ﻿({
     baseUrl: "../../client/app",
-    out: "android/main.min.js",
+    out: "web/main.min.js",
     name: "main",
     // important for finding dynamically added scripts
     findNestedDependencies: true,
@@ -9,8 +9,11 @@
         toplevel: false,
         max_line_length: 600,
         defines: {
-            BuildConfig: ['name', 'android']
+            BuildConfig: ['name', 'web'],
+            BuildEnv: ['name', 'prod']
         }
     },
-    mainConfigFile: '../../client/app/main.js'
+    mainConfigFile: '../../client/app/main.js',
+    // don't allow a real phonegap on web builds
+    stubModules: ['phonegap']
 })

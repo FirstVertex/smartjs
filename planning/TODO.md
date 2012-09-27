@@ -14,14 +14,12 @@ SmartJs is a labor of love I do before work, on lunch break, and after work unti
 * demonstrate Phonegap API around a device feature, probaby camera, so implement chat room picture feature
 * implement Hackbook as an AMD module
 * testing on other devices and different layouts
-* mad unit tests yo
 
 /server
 -------
-* needs a thorough refactor
+* needs a refactor
 * needs comments deleted and added
 * add in use of lodash
-* mad unit tests yo
 
 /database
 -------
@@ -29,8 +27,10 @@ SmartJs is a labor of love I do before work, on lunch break, and after work unti
 
 /qa
 -------
-* mad unit tests yo
-* perfect and upload r.js build script
+* create a build for the html/css
+* create a xcopy batch that combines the built html/css and the currently built js
+* create a batch that copies out this built version to the android project assets/www
+* need to use git branching
 
 /planning
 -------

@@ -9,7 +9,8 @@
         toplevel: false,
         max_line_length: 600,
         defines: {
-            BuildConfig: ['name', 'android']
+            BuildConfig: ['name', 'android'],
+            BuildEnv: ['name', 'prod']
         }
     },
     mainConfigFile: '../../client/app/main.js'

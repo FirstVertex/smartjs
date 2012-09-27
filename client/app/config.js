@@ -9,64 +9,87 @@ define([
     'util/util'
 ], function (Util) {
         
-    var serverPort = '99',
-        localhost = '127.0.0.1',
-        serverAddress = '192.168.1.115';
+    var envs = {
+        dev: {
+            serverPort: 99,
+            localhost: '127.0.0.1',
+            serverIP: '192.168.1.101'
+        },
+        prod: {
+            serverPort: 80,
+            localhost: 'localhost_not_defined_in_prod',// this will generate a run time error when trying to connect
+            serverName: 'smartjs.programico.com'
+        }
+    };
+
+    // see if a config was specified by a bulid script using uglify's --define
+    // example usage is in /qa/builds/build.android.js
+    function getBuildEnv() {
+        return BuildEnv && envs[BuildEnv];
+    }
+
+    // set the current environment
+    envs.current = getBuildEnv() ||
+        // the env to use if no other is specified
+        envs.dev;
+
+    var isProd = envs.current === envs.prod;
+
+    function getServerAddress(preferLocalHost) {
+        var port = envs.current.serverPort == 80 ? '' : ':' + envs.current.serverPort,
+            address = envs.current.serverName || (preferLocalHost ? envs.current.localhost : envs.current.serverIP);
+        return '//{0}{1}'.format(address, port);
+    }
 
     // all configurations used by the application
     var configs = {
             test: {
                 device: 'web',
-                serverAddress: '//{0}:{1}'.format(localhost, serverPort),
+                serverAddress: getServerAddress(true),
+                // this is picked up by the storage module and allows to create a random namespace in localStorage, which can be useful in testing
                 storagePrefix: Util.randomString(),
-                useIntellisense: true,
                 showConsoleMessages: true
             },
             web: {
                 device: 'web',
-                serverAddress: '//{0}:{1}'.format(localhost, serverPort),
+                serverAddress: getServerAddress(true),
                 storagePrefix: '',
-                useIntellisense: true,
                 showConsoleMessages: true
             },
-            phone: {
-                device: 'phone',
-                serverAddress: '//{0}:{1}'.format(serverAddress, serverPort),
+            android: {
+                device: 'android',
+                serverAddress: getServerAddress(false),
                 storagePrefix: '',
-                useIntellisense: false,
                 showConsoleMessages: true
             }
-            /* not used
-            tablet: {
-                device: 'tablet',
-                serverAddress: '//{0}:{1}'.format(serverAddress, serverPort),
-                storagePrefix: ''
-            }
-            */
         };
 
-    // change the configuration here based on the tageted platform
+    // the config to use if no other is specified
     configs.current = configs.web;    
 
     // private functions
-    
+
     // see if a config was passed on the Url line
     function getUrlConfig() {
-        var urlParams = Util.getParameters();
-        var config = null;
-        if (urlParams.config !== undefined) {
+        var urlParams = Util.getParameters(),
             config = urlParams.config;
-        }
-        if (config) return configs[config];
-        return null;
+        return config && configs[config];
+    }
+
+    // see if a config was specified by a bulid script using uglify's --define
+    // example usage is in /qa/builds/build.android.js
+    function getBuildConfig() {
+        return BuildConfig && configs[BuildConfig];
     }
     
-    // if the config was specified on the url use it, else use current set above
-    var currentConfig = getUrlConfig() || configs.current;
+    // determine which configuration to use
+    var currentConfig = getBuildConfig() || getUrlConfig() || configs.current;
+    // the config knows what env
+    currentConfig.isProd = isProd;
 
     // avoid depending on Logger, because it depends on Config!
     function logMessage(message) {
-        if (!currentConfig.isTest) return;
+        if (!currentConfig.showConsoleMessages) return;
         console.log(message);
     }
 
