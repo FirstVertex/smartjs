@@ -17,7 +17,6 @@ define([
         },
         prod: {
             serverPort: 80,
-            localhost: 'localhost_not_defined_in_prod',// this will generate a run time error when trying to connect
             serverName: 'smartjs.programico.com'
         }
     };

@@ -1,2 +1,4 @@
-#Ignore built files written by r.js, these will be in any subfolder of here
-./*/*
+#Ignore built files written by r.js
+android/*
+debug/*
+web/*
