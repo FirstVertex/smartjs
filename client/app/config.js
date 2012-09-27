@@ -24,7 +24,9 @@ define([
     // see if a config was specified by a bulid script using uglify's --define
     // example usage is in /qa/builds/build.android.js
     function getBuildEnv() {
-        return BuildEnv && envs[BuildEnv];
+        if (typeof (BuildEnv) === "undefined") return null;
+        if (!BuildEnv && !envs[BuildEnv]) return null;
+        return envs[BuildEnv];
     }
 
     // set the current environment
@@ -37,7 +39,7 @@ define([
     function getServerAddress(preferLocalHost) {
         var port = envs.current.serverPort == 80 ? '' : ':' + envs.current.serverPort,
             address = envs.current.serverName || (preferLocalHost ? envs.current.localhost : envs.current.serverIP);
-        return '//{0}{1}'.format(address, port);
+        return 'http://{0}{1}'.format(address, port);
     }
 
     // all configurations used by the application
@@ -51,7 +53,7 @@ define([
             },
             web: {
                 device: 'web',
-                serverAddress: getServerAddress(true),
+                serverAddress: getServerAddress(false),
                 storagePrefix: '',
                 showConsoleMessages: true
             },
@@ -64,7 +66,7 @@ define([
         };
 
     // the config to use if no other is specified
-    configs.current = configs.web;    
+    configs.current = configs.web;
 
     // private functions
 
@@ -78,7 +80,9 @@ define([
     // see if a config was specified by a bulid script using uglify's --define
     // example usage is in /qa/builds/build.android.js
     function getBuildConfig() {
-        return BuildConfig && configs[BuildConfig];
+        if (typeof (BuildConfig) === "undefined") return null;
+        if (!BuildConfig && !configs[BuildConfig]) return null;
+        return configs[BuildConfig];
     }
     
     // determine which configuration to use

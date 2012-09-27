@@ -5,6 +5,6 @@ set scriptName=build.%curBuild%
 if not (%2)==() set scriptName=%scriptName%.prod
 @echo on
 node r.js -o %scriptName%.js
-pause
-xcopy %curBuild%\main.min.js ..\..\client\app\ /F /R /-Y
+rem pause
+rem xcopy %curBuild%\main.min.js ..\..\client\app\ /F /R /-Y
 pause

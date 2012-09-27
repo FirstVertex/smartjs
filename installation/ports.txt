@@ -4,3 +4,6 @@
 98	the mongodb server
 99	the nowjs server
 100	the qa testing site.  served by Apache and pointed to C:\dev\smartjs
+
+In order to get android to connect to your box you will likely need to do this:
+http://www.mobitechie.com/android-2/how-to-access-localhost-on-android-over-wifi/

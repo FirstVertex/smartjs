@@ -3,10 +3,8 @@
 // it is used for debugging the build process itself
 ({
     baseUrl: "../../client/app",
-    out: "debug/main.min.js",
+    out: "debug/main.js",
     name: "main",
-    // don't allow a real phonegap on web builds
-    stubModules: ['phonegap'],
     // important for finding dynamically added scripts
     findNestedDependencies: true,
     // for debugging we turn off optimization so we can still read the built output

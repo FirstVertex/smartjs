@@ -24,7 +24,6 @@ requirejs.config({
         pubsubLib: '../lib/jquery.pubsub',
         knockout: '../lib/knockout-2.1.0',
         now: '../lib/now',
-        phonegap: '../lib/cordova-2.0.0',
         underscore: '../lib/lodash.custom'
     }
 });
@@ -66,13 +65,11 @@ require([
         // don't wait for deviceready event
         isDeviceReady = true;
     } else {
-        // mobile device, load phonegap and wait for deviceready event
+        // mobile device, wait for deviceready event fired by phonegap
         document.addEventListener('deviceready', function () {
             isDeviceReady = true;
             checkLaunchConditions();
         }, false);
-        // phonegap will send out deviceready event
-        require(['phonegap']);
     }
 
     // listen for doc ready

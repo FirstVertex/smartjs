@@ -1,4 +1,3 @@
 #Ignore built files written by r.js
-android/*
 debug/*
 web/*
