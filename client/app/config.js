@@ -6,6 +6,7 @@
 // this module returns a static object
 
 define([
+    // needed for string.format
     'util/util'
 ], function (Util) {
         
@@ -13,6 +14,7 @@ define([
         dev: {
             serverPort: 99,
             localhost: '127.0.0.1',
+            // will be used in local android builds, ip of your machine
             serverIP: '192.168.1.101'
         },
         prod: {
@@ -47,20 +49,17 @@ define([
             test: {
                 device: 'web',
                 serverAddress: getServerAddress(true),
-                // this is picked up by the storage module and allows to create a random namespace in localStorage, which can be useful in testing
-                storagePrefix: Util.randomString(),
-                showConsoleMessages: true
+                showConsoleMessages: true,
+                isTest: true
             },
             web: {
                 device: 'web',
                 serverAddress: getServerAddress(false),
-                storagePrefix: '',
                 showConsoleMessages: true
             },
             android: {
                 device: 'android',
                 serverAddress: getServerAddress(false),
-                storagePrefix: '',
                 showConsoleMessages: true
             }
         };
@@ -87,16 +86,8 @@ define([
     
     // determine which configuration to use
     var currentConfig = getBuildConfig() || getUrlConfig() || configs.current;
-    // the config knows what env
+    // the config knows whether its in prod
     currentConfig.isProd = isProd;
-
-    // avoid depending on Logger, because it depends on Config!
-    function logMessage(message) {
-        if (!currentConfig.showConsoleMessages) return;
-        console.log(message);
-    }
-
-    logMessage('Config: currentConfig=' + Util.inspectObject(configs.current));
     
     return currentConfig;
 });

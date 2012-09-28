@@ -13,9 +13,9 @@ public class SmartJs extends DroidGap {
     public void onCreate(Bundle savedInstanceState) {
         //http://stackoverflow.com/questions/11159280/programmatically-clear-phonegap-cordova-apps-cache-on-android-to-simulate-a-fre
         Random generator = new Random();
-        int z = generator.nextInt();
+        int w = generator.nextInt();
         super.onCreate(savedInstanceState);
-        super.loadUrl("file:///android_asset/www/index.html?" + z);
+        super.loadUrl("file:///android_asset/www/index.html?" + w);
     }
 
     @Override

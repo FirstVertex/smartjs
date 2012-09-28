@@ -1,9 +1,4 @@
-﻿// prevent deep linking. might as well do this first because it will refresh if they have a hash when visiting the page for the 1st time
-if (location.hash || location.href.slice(-1) == "#") {
-    window.history.pushState("", document.title, window.location.pathname);
-}
-
-// SmartJs v0.1.0
+﻿// SmartJs v0.1.0
 // (c) Hugh Anderson - https://github.com/hughanderson4/smartjs
 // License: MIT (http://www.opensource.org/licenses/mit-license.php)
 
@@ -13,6 +8,10 @@ if (location.hash || location.href.slice(-1) == "#") {
 // this module will publish a single event to get the app booted
 // this module will require any orphan dependencies so their code is established into the ecosystem
 
+// prevent deep linking. might as well do this first because it will refresh if they have a hash when visiting the page for the 1st time
+if (location.hash || location.href.slice(-1) == "#") {
+    window.history.pushState("", document.title, window.location.pathname);
+}
 
 // config for requirejs, should be the 1st thing encountered by require
 requirejs.config({
@@ -33,11 +32,24 @@ require([
     'config',
     'jquery',
     'jqueryMobile'
-], function (require, Config, Jquery) {
+], function (require, Config, Jquery, Mobile) {
 
-    var isDeviceReady = false,
+    var isDeviceReady = Config.device === 'web',
         isDocReady = false,
         isLaunched = false;
+
+    function bootstrap(LocalStorage, Logger, Pubsub) {
+        Logger.log('config', Config, true);
+
+        // todo: implement browser screen
+        var isBrowserAllowed = true, // Browser.isPermitted()
+            hasMember = LocalStorage.hasLocalMember(),
+            localMember = isBrowserAllowed && hasMember ? LocalStorage.getLocalMember() : null,
+            eventName = !isBrowserAllowed ? 'error.redirect' : hasMember ? 'member.load' : 'member.none';
+
+        // this will start off the app, most likely Router will handle it
+        Pubsub.publish(eventName, localMember);
+    }
 
     function checkLaunchConditions() {
         if (!isLaunched && isDeviceReady && isDocReady) {
@@ -49,33 +61,33 @@ require([
                 'router',   // need to explictily load it here because nobody depends on it
                 'util/koHelper',   // need to explictily load it here because nobody depends on it
                 'util/fullHeight'   // need to explictily load it here because nobody depends on it
-            ], function (LocalStorage, Logger, Pubsub) {
-                Logger.log('Bootstrap: app is launching');
-
-                // todo: implement browser screen
-                var isBrowserAllowed = true; // Browser.isPermitted()
-                var eventName = !isBrowserAllowed ? 'error.redirect' : LocalStorage.hasLocalMember() ? 'member.load' : 'member.none';
-
-                Pubsub.publish(eventName, LocalStorage.getLocalMember());
-            });
+            ], bootstrap);
         }
     }
 
-    if (Config.device === 'web') {
-        // don't wait for deviceready event
+    // mobile device, wait for deviceready event fired by phonegap
+    function onDeviceReady() {
+        console.log('deviceReady');
         isDeviceReady = true;
-    } else {
-        // mobile device, wait for deviceready event fired by phonegap
-        document.addEventListener('deviceready', function () {
-            isDeviceReady = true;
-            checkLaunchConditions();
-        }, false);
+        checkLaunchConditions();
     }
 
-    // listen for doc ready
-    Jquery(document).ready(function () {
-        console.log('docready');
+    function onDocumentReady() {
+        console.log('docReady');
         isDocReady = true;
         checkLaunchConditions();
+    }
+
+    if (!isDeviceReady) {
+        document.addEventListener('deviceready', onDeviceReady, false);
+    }
+
+    Jquery(document).ready(onDocumentReady);
+
+    Jquery.extend(Mobile, {
+        ajaxEnabled: false,
+        showLoadMsg: false,
+        hashListeningEnabled: false,
+        pushStateEnabled: false
     });
 });

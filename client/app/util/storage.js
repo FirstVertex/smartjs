@@ -8,19 +8,22 @@
 define([
     'jstorage',
     'config',
-    'util/pubsub'
-], function (Storage, Config, Pubsub) {
+    'util/pubsub',
+    'util/util'
+], function (Storage, Config, Pubsub, Util) {
+
+    var storagePrefix = Config.isTest ? Util.randomString() : '';
     
     var keys = {
         MEMBER: 'member'
     };
 
     function saveToDevice(key, value) {
-        Storage.set(Config.storagePrefix + key, value);
+        Storage.set(storagePrefix + key, value);
     }
 
     function lookup(key) {
-        return Storage.get(Config.storagePrefix + key, null);
+        return Storage.get(storagePrefix + key, null);
     }
 
     function hasKey(key) {
