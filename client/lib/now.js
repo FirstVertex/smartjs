@@ -384,7 +384,8 @@
         };
         var dependencies = [{
             key: "io",
-            path: "/" + now.core.options.socketio.resource + "/socket.io.js"
+            // hack: host socket.io locally
+            path: "/lib/socket.io.js"
         }],
             dependenciesLoaded = 0,
             scriptLoaded = function () {
@@ -421,7 +422,9 @@
             }
             var fileref = document.createElement("script");
             fileref.setAttribute("type", "text/javascript");
-            fileref.setAttribute("src", uri + dependencies[i].path);
+            // hack: host socket.io locally
+            var endUri = dependencies[i].key === "io" ? "" : uri;
+            fileref.setAttribute("src", endUri + dependencies[i].path);
             fileref.onload = scriptLoaded;
             isIE && (fileref.onreadystatechange = function () {
                 (fileref.readyState === "loaded" || fileref.readyState === "complete") && scriptLoaded()
