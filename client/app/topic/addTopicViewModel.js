@@ -6,12 +6,12 @@
 // this module returns a static object
 
 define([
-    'server',
+    'server/dataContext',
     'jquery',
     'knockout',
     'util/pubsub',
     'data/schema'
-], function (Server, Jquery, Ko, Pubsub, Schema) {
+], function (DataContext, Jquery, Ko, Pubsub, Schema) {
     
     var
         // binded to ui
@@ -47,7 +47,7 @@ define([
             checkingTopicName(false);
         }
         else {
-            Server.newTopic(dto, function (saveResult) {
+            DataContext.newTopic(dto, function (saveResult) {
                 checkingTopicName(false);
                 if (saveResult) {
                     isVisible(false);

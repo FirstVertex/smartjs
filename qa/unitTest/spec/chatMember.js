@@ -1,14 +1,14 @@
 ﻿var calledPublish = false;
 
-var serverStub =
+var groupContextStub =
     {
-        publishGroupEvent: function (eventName, dto) {
+        publish: function (eventName, dto) {
             calledPublish = true;
-            console.log('stub publishGroupEvent called with ' + eventName);
+            console.log('stub group publish called with ' + eventName);
         }
     };
 
-define("server", [], serverStub);
+define("server/groupContext", [], groupContextStub);
 
 define(
     [

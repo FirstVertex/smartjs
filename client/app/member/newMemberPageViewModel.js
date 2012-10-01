@@ -6,11 +6,11 @@
 // this module returns a static object
 
 define([
-    'server',
+    'server/dataContext',
     'jquery',
     'knockout',
     'data/schema'
-], function (Server, Jquery, Ko, Schema) {
+], function (DataContext, Jquery, Ko, Schema) {
 
     
     var // bind to UI textbox
@@ -43,7 +43,7 @@ define([
             checkingMemberName(false);
         }
         else {
-            Server.saveMember(dto, function (saveResult) {
+            DataContext.saveMember(dto, function (saveResult) {
                 checkingMemberName(false);
                 if (saveResult) {
                     goodMemberName(true);

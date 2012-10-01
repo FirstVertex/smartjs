@@ -6,9 +6,9 @@
 // this module returns a factory function
 
 define([
-    'server',
+    'server/groupContext',
     'knockout'
-], function (Server, Ko) {
+], function (GroupContext, Ko) {
 
     function chatMemberViewModel(memberName, clientId, isLocalMember) {
         var self = this;
@@ -33,7 +33,7 @@ define([
                     var dto = {
                         isTyping: value
                     };
-                    Server.publishGroupEvent('chat.typing', dto);
+                    GroupContext.publish('chat.typing', dto);
                 }
             }
         });

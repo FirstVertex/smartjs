@@ -9,12 +9,13 @@ define([
     'topic/topicViewModel',
     'topic/addTopicViewModel',
     'util/storage',
-    'server',
+    'server/groupContext',
+    'server/dataContext',
     'knockout',
     'underscore',
     'util/pubsub',
     'util/logger'
-], function (TopicViewModel, AddTopicViewModel, LocalStorage, Server, Ko, Und, Pubsub, Logger) {
+], function (TopicViewModel, AddTopicViewModel, LocalStorage, GroupContext, DataContext, Ko, Und, Pubsub, Logger) {
 
     var
         // special group that gets the count of other groups
@@ -30,7 +31,7 @@ define([
     function pickTopic(topicViewModel) {
         enteringChatRoom(true);
         var roomName = topicViewModel.topicName();
-        Server.joinGroup(localMemberName(), roomName);
+        GroupContext.joinGroup(localMemberName(), roomName);
         var dto = {
             topicName: roomName
         };
@@ -53,8 +54,8 @@ define([
     function onTopicPageLoad() {
         loadingTopics(true);
         // the name of myself when in topicWatcher group doesn't matter, just needs to be truthy
-        Server.joinGroup(1, topicSubscriberGroup);
-        Server.listTopics(function () {
+        GroupContext.joinGroup(1, topicSubscriberGroup);
+        DataContext.listTopics(function () {
             loadingTopics(false);
         });
     }

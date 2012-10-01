@@ -7,12 +7,14 @@
 
 define([
     'chat/chatMemberViewModel',
-    'server',
+    'server/server',
+    'server/groupContext',
+    'server/dataContext',
     'knockout',
     'util/pubsub',
     'util/logger',
     'jquery'
-], function (ChatMemberViewModel, Server, Ko, Pubsub, Logger, Jquery) {
+], function (ChatMemberViewModel, Server, GroupContext, DataContext, Ko, Pubsub, Logger, Jquery) {
     Logger.log('chatRoomViewModel line 1');
     
         // identifies me
@@ -49,7 +51,7 @@ define([
         var chatDto = {
             words: currentChatInput()
         };
-        Server.publishGroupEvent('chat.message', chatDto);
+        GroupContext.publish('chat.message', chatDto);
         // set the private variable to prevent a redundant packet
         localMemberViewModel().setTypingWithoutPublishing(false);
         currentChatInput('');
@@ -61,7 +63,7 @@ define([
         chatMessages.removeAll();
 
         loadingMembers(true);
-        Server.getTopicMembers(newRoomName, function () {
+        DataContext.getTopicMembers(newRoomName, function () {
             loadingMembers(false);
         });
     }
