@@ -9,7 +9,7 @@ define([
     'chat/chatMemberViewModel',
     'server/server',
     'server/groupContext',
-    'server/dataContext',
+    'data/dataContext',
     'knockout',
     'util/pubsub',
     'util/logger',

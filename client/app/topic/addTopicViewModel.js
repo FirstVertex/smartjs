@@ -6,7 +6,7 @@
 // this module returns a static object
 
 define([
-    'server/dataContext',
+    'data/dataContext',
     'jquery',
     'knockout',
     'util/pubsub',

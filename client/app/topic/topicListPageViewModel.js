@@ -10,7 +10,7 @@ define([
     'topic/addTopicViewModel',
     'util/storage',
     'server/groupContext',
-    'server/dataContext',
+    'data/dataContext',
     'knockout',
     'underscore',
     'util/pubsub',

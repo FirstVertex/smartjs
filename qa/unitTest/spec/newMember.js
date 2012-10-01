@@ -30,7 +30,7 @@ var schemaStub =
         }
     };
 
-define("server/dataContext", [], serverStub);
+define("data/dataContext", [], serverStub);
 define("data/schema", [], schemaStub);
 
 define(
