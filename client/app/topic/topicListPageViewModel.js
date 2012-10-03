@@ -10,12 +10,11 @@ define([
     'topic/addTopicViewModel',
     'util/storage',
     'server/groupContext',
-    'data/dataContext',
     'knockout',
     'underscore',
     'util/pubsub',
     'util/logger'
-], function (TopicViewModel, AddTopicViewModel, LocalStorage, GroupContext, DataContext, Ko, Und, Pubsub, Logger) {
+], function (TopicViewModel, AddTopicViewModel, LocalStorage, GroupContext, Ko, Und, Pubsub, Logger) {
 
     var
         // special group that gets the count of other groups
@@ -55,7 +54,7 @@ define([
         loadingTopics(true);
         // the name of myself when in topicWatcher group doesn't matter, just needs to be truthy
         GroupContext.joinGroup(1, topicSubscriberGroup);
-        DataContext.listTopics(function () {
+        GroupContext.listTopics(function () {
             loadingTopics(false);
         });
     }

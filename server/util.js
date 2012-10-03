@@ -1,48 +1,50 @@
-var sysUtil = require('util');
+// SmartJs v0.1.0
+// (c) Hugh Anderson - https://github.com/hughanderson4/smartjs
+// License: MIT (http://www.opensource.org/licenses/mit-license.php)
 
-function Util() {
+// the util module provides a general location for routines used everywhere
+// this module returns a static object
+
+var sysUtil = require('util');
+var Schema = require('./schema');
+
+function inspectObject (obj) {
+    return sysUtil.inspect(obj, true, 7, true);
 }
 
-Util.prototype.inspectObject = function (obj) {
-    return sysUtil.inspect(obj, true, 7, true);
-};
-
-Util.prototype.requestFactory = function (xStruct, callback) {
-    return {
-        xStruct: xStruct,
-        callback: callback
-    };
-};
-
-Util.prototype.responseFactory = function (xStruct, error, result) {
-    return {
-        event: xStruct ? xStruct.event : null,
-        kind: xStruct ? xStruct.kind : null,
-        sender: xStruct ? xStruct.sender : null,
-        error: error,
-        data: result
-    };
-};
-
-Util.prototype.processResponse = function (request, error, result) {
+function processResponse(request, error, result) {
     if (error) {
-        console.error(">>!! Error occurred: " + this.inspectObject(error));
+        console.error(">>!! Error occurred: " + inspectObject(error));
     }
     if (request && request.callback) {
-        var response = this.responseFactory(request.xStruct, error, result);
-        console.log(">>Sending back response: " + this.inspectObject(response));
+        var response = Schema.response.create(request.xStruct, error, result);
+        console.log(">>Sending back response: " + inspectObject(response));
         request.callback(response);
     } else {
         console.log('non callback request');
     }
 }
 
-Util.prototype.isError = function (error, request) {
+function isValidResult(error, result, request) {
+    var emptyResult = error ? error : result ? null : 'Invalid result';
+    if (emptyResult) {
+        processResponse(request, emptyResult, null);
+        return false;
+    }
+    return true;
+}
+
+function isError(error, request) {
     if (error) {
-        this.processResponse(request, error, null);
+        processResponse(request, error, null);
         return true;
     }
     return false;
 }
 
-module.exports = new Util();
+module.exports = {
+    inspectObject: inspectObject,
+    processResponse: processResponse,
+    isValidResult: isValidResult,
+    isError: isError
+};

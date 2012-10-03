@@ -19,21 +19,8 @@ function (Server) {
         Server.initiateEvent('topic.new', eventKind, topicData, callback);
     }
 
-    function listTopics(callback) {
-        Server.initiateEvent('topic.list', eventKind, null, callback);
-    }
-
-    function getTopicMembers(topicName, callback) {
-        var dto = {
-            topicName: topicName
-        };
-        Server.initiateEvent('topic.members', eventKind, dto, callback);
-    }
-
     return {
         saveMember: saveMember,
-        newTopic: newTopic,
-        listTopics: listTopics,
-        getTopicMembers: getTopicMembers
+        newTopic: newTopic
     };
 });

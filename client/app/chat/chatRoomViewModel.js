@@ -9,12 +9,11 @@ define([
     'chat/chatMemberViewModel',
     'server/server',
     'server/groupContext',
-    'data/dataContext',
     'knockout',
     'util/pubsub',
     'util/logger',
     'jquery'
-], function (ChatMemberViewModel, Server, GroupContext, DataContext, Ko, Pubsub, Logger, Jquery) {
+], function (ChatMemberViewModel, Server, GroupContext, Ko, Pubsub, Logger, Jquery) {
     Logger.log('chatRoomViewModel line 1');
     
         // identifies me
@@ -63,7 +62,7 @@ define([
         chatMessages.removeAll();
 
         loadingMembers(true);
-        DataContext.getTopicMembers(newRoomName, function () {
+        GroupContext.getTopicMembers(newRoomName, function () {
             loadingMembers(false);
         });
     }

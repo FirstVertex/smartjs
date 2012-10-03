@@ -1,32 +1,31 @@
-var dbServerIpAddress = '127.0.0.1',
+var webServerPort = 99,
+    dbServerIpAddress = '127.0.0.1',
     dbServerPort = 98,
-    webServerPort = 99,
-    Database = require('./dataProvider').dataProvider,
-    dataProvider = new Database(dbServerIpAddress, dbServerPort);
+    dbName = 'smartjs-db';
 
-dataProvider.startup(function (isError) {
-    if (isError) {
+require('./mongoDataConnector').startup(dbServerIpAddress, dbServerPort, dbName, function (succeeded) {
+    if (!succeeded) {
         console.log('Failed to connect to Database, so quitting');
         return;
     }
     console.log('Successfully connected to Database');
 
     var readFile = require('fs').readFileSync,
-        indexFile = readFile(__dirname + '/index.html'),
+        indexFile = readFile(__dirname + '/static/index.html'),
         indexHandler = function (req, res) {
             console.log('Received request for ' + req.url);
             res.end(indexFile);
         },
-        createServer = require('http').createServer,  
+        createServer = require('http').createServer,
         server = createServer(indexHandler).listen(webServerPort),
-        nowjs = require('now'),
-        everyone = nowjs.initialize(server);
+        Nowjs = require('now'),
+        everyone = Nowjs.initialize(server),
+        ConnectionManager = require('./connectionManager');
+    
+    // this is all the wiring necessary
+    everyone.now.eventClientToServer = ConnectionManager.handleConnection;
 
-    console.log('Node Js Nowserver listening on port ' + webServerPort);
-
-    new require('./application').App(dataProvider, everyone, nowjs);
-
-    console.log('Application started');
+    console.log('NodeJs listening on port ' + webServerPort);
     console.log('==================');
     console.log('Hit Ctrl+C to quit');
     console.log('==================');

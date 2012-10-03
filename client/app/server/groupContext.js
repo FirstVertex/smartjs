@@ -48,10 +48,23 @@ function (Server) {
         return currentGroupName;
     }
 
+    function listTopics(callback) {
+        Server.initiateEvent('topic.list', eventKind, null, callback);
+    }
+
+    function getTopicMembers(topicName, callback) {
+        var dto = {
+            topicName: topicName
+        };
+        Server.initiateEvent('topic.members', eventKind, dto, callback);
+    }
+
     return {
         joinGroup: joinGroup,
         leaveGroup: leaveGroup,
         publish: publish,
-        getCurrentGroupName: getCurrentGroupName
+        getCurrentGroupName: getCurrentGroupName,
+        listTopics: listTopics,
+        getTopicMembers: getTopicMembers
     };
 });
