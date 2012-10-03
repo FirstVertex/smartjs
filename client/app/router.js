@@ -95,6 +95,16 @@ define([
         }
     });
 
+    function onHashChanged(event) {
+        var oldHash = '#' + event.oldURL.split('#')[1];
+        var newHash = '#' + event.newURL.split('#')[1];
+
+        if (newHash === Pages.getPageSelector(Pages.topicList)) {
+            publishTopicView();
+        }
+    }
+    window.addEventListener('hashchange', onHashChanged, false);
+
     // these are the 2 possible events fired by bootstrap.  since it is the first transition, give it a couple ms to warm up
     Pubsub.subscribe('member.new', gotoTopicList);
     Pubsub.subscribe('member.load', gotoTopicList);
