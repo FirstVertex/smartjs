@@ -54,7 +54,7 @@ define([
             },
             web: {
                 device: 'web',
-                serverAddress: getServerAddress(false),
+                serverAddress: getServerAddress(true),
                 showConsoleMessages: true
             },
             android: {

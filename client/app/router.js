@@ -16,65 +16,40 @@ define([
 ], function (Pages, Pubsub, require, Jquery, Mobile, Ko, Config) {
     
     function gotoPage(page) {
-        Mobile.changePage(page);
+        Mobile.changePage(page.page);
     }
 
-    // lazily loaded and bound New Member Page
-    var _boundNewMemberPage = null;
-    function boundNewMemberPage(callback) {
-        if (_boundNewMemberPage) {
-            callback(_boundNewMemberPage);
+    var boundPages = [];
+
+    function boundPage(page, modulePath, callback) {
+        var pageKey = page.attr('id');
+        if (boundPages[pageKey]) {
+            callback(boundPages[pageKey]);
         } else {
-            require(['member/newMemberPageViewModel'], function (Model) {
-                Ko.applyBindings(Model, Pages.newMember.get(0));
-                _boundNewMemberPage = Pages.newMember;
-                callback(_boundNewMemberPage);
+            require([modulePath], function (Model) {
+                Ko.applyBindings(Model, page.get(0));
+                boundPages[pageKey] = {
+                    page: page,
+                    model: Model
+                };
+                callback(boundPages[pageKey]);
             });
         }
     }
 
     function gotoNewMember() {
-        boundNewMemberPage(gotoPage);
-    }
-
-    // lazily loaded and bound Topic List Page
-    var _boundTopicListPage = null;
-    function boundTopicListPage(callback) {
-        if (_boundTopicListPage) {
-            callback(_boundTopicListPage);
-        } else {
-            require(['topic/topicListPageViewModel'], function (Model) {
-                Ko.applyBindings(Model, Pages.topicList.get(0));
-                _boundTopicListPage = Pages.topicList;
-                callback(_boundTopicListPage);
-            });
-        }
+        boundPage(Pages.newMember, 'member/newMemberPageViewModel', gotoPage);
     }
 
     function gotoTopicList() {
-        boundTopicListPage(gotoPage);
-    }
-
-    // lazily loaded and bound Chat Room Page
-    var _boundChatRoomPage = null;
-    var chatRoom = null;
-    function boundChatRoomPage(roomName, callback) {
-        if (_boundChatRoomPage) {
-            chatRoom.init(roomName);
-            callback(_boundChatRoomPage);
-        } else {
-            require(['chat/chatRoomViewModel'], function (Model) {
-                chatRoom = Model;
-                chatRoom.init(roomName);
-                Ko.applyBindings(Model, Pages.chatPage.get(0));
-                _boundChatRoomPage = Pages.chatPage;
-                callback(_boundChatRoomPage);
-            });
-        }
+        boundPage(Pages.topicList, 'topic/topicListPageViewModel', gotoPage);
     }
 
     function gotoChatRoom(dto) {
-        boundChatRoomPage(dto.topicName, gotoPage);
+        boundPage(Pages.chatPage, 'chat/chatRoomViewModel', function (boundPage) {
+            boundPage.model.init(dto.topicName);
+            gotoPage(boundPage);
+        });
     }
 
     // provide 1/4 second throttle for when both hashchange and pageshow are received
