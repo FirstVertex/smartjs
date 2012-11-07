@@ -104,7 +104,16 @@ define([
     }
 
     function onChatroomData(chatData, isRemoteEvent, senderClientId) {
-        var sender = findMemberViewModel(senderClientId);
+        var sender;
+        if (senderClientId == -1) {
+            // make a Mock for the Server VM
+            sender = {
+                memberName: 'Server',
+                setTypingWithoutPublishing: function () { }
+            };
+        } else {
+            sender = findMemberViewModel(senderClientId);
+        }
         if (sender) {
             chatMessages.unshift({
                 memberName: sender.memberName,

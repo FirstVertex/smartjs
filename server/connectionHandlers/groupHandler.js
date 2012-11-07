@@ -101,6 +101,16 @@ function newTopicWasSaved(topicName) {
     }
 }
 
+// interface to call to send a message to all
+function broadcastToAll(message) {
+    var everyone = Nowjs.getGroup('everyone');
+    var dto = {
+        words: message
+    };
+    console.log('broadcast message to all: ' + Util.inspectObject(dto));
+    everyone.now.eventServerToClient('chat.message', dto, serverClientId);
+}
+
 // each time a new nowjs group is created, attach to it's leave handler
 Nowjs.on('newgroup', function (group) {
     console.log('Nowjs group created: ' + group.groupName);
@@ -124,6 +134,17 @@ Nowjs.on('disconnect', function () {
         }
     });
 });
+
+// feature to broadcast the time periodically
+function nextTick() {
+    return 60000 - (new Date() % 60000);
+}
+function onTimer() {
+    var echo = 'The date/time is now: ' + new Date().toString();
+    broadcastToAll(echo);
+    setTimeout(onTimer, nextTick());
+}
+setTimeout(onTimer, nextTick());
 
 module.exports = {
     processConnection: processConnection,
