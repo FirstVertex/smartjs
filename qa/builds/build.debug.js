@@ -5,6 +5,7 @@
     baseUrl: "../../client/app",
     out: "debug/main.js",
     name: "main",
+    include: ['member/newMemberPageViewModel', 'topic/topicListPageViewModel', 'chat/chatRoomViewModel'],
     // important for finding dynamically added scripts
     findNestedDependencies: true,
     // for debugging we turn off optimization so we can still read the built output

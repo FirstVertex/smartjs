@@ -2,6 +2,7 @@
     baseUrl: "../../client/app",
     out: "android/assets/www/app/main.js",
     name: "main",
+    include: ['member/newMemberPageViewModel', 'topic/topicListPageViewModel', 'chat/chatRoomViewModel'],
     // important for finding dynamically added scripts
     findNestedDependencies: true,
     uglify: {
