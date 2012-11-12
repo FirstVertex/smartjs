@@ -108,7 +108,9 @@ function broadcastToAll(message) {
         words: message
     };
     console.log('broadcast message to all: ' + Util.inspectObject(dto));
-    everyone.now.eventServerToClient('chat.message', dto, serverClientId);
+    if (everyone && everyone.now && everyone.now.eventServerToClient) {
+        everyone.now.eventServerToClient('chat.message', dto, serverClientId);
+    }
 }
 
 // each time a new nowjs group is created, attach to it's leave handler

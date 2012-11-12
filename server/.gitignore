@@ -1,0 +1,2 @@
+﻿# Ignore mognodb, now, and socket.io modules installed locally
+node_modules

@@ -57,7 +57,7 @@ function startup(host, port, dbName, callback) {
     console.log('mongoDataConnector.startup');
 
     var dbServer = new Mongo.Server(host, port, { auto_reconnect: true });
-    Database = new Mongo.Db(dbName, dbServer);
+    Database = new Mongo.Db(dbName, dbServer, { safe: true });
     console.log('host=' + host + ',port=' + port + ',db=' + Database);
     if (!Database) {
         console.log('quitting because there is no database');
