@@ -48,13 +48,13 @@ define([
     var configs = {
             test: {
                 device: 'web',
-                serverAddress: getServerAddress(true),
+                serverAddress: getServerAddress(false),
                 showConsoleMessages: true,
                 isTest: true
             },
             web: {
                 device: 'web',
-                serverAddress: getServerAddress(true),
+                serverAddress: getServerAddress(false),
                 showConsoleMessages: true
             },
             android: {
