@@ -78,7 +78,6 @@ define([
 
     // subscriptions
     Pubsub.subscribe('topic.list', onUpdateTopicList);
-    Pubsub.subscribe('topic.new', onUpdateTopicCount);
     Pubsub.subscribe('topic.count', onUpdateTopicCount);
     Pubsub.subscribe('topic.view', onTopicPageLoad);
     
