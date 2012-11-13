@@ -15,7 +15,7 @@ define([
             serverPort: 99,
             localhost: '127.0.0.1',
             // will be used in local android builds, ip of your machine
-            serverIP: '192.168.1.101'
+            serverIP: '10.1.0.112'
         },
         prod: {
             serverPort: 80,
