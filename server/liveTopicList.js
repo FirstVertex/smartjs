@@ -16,7 +16,7 @@ function addTopicToCache(topicName) {
             topicName: topicName,
             memberList: []
         };
-        topicCache.push(newTopic);
+        topicCache.unshift(newTopic);
         return getTopicCountChangeDto(newTopic);
     }
     return null;

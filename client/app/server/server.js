@@ -30,44 +30,44 @@ function (NowInit, CallbackQueue, Config, Pubsub, Logger) {
     var now = NowInit(Config.serverAddress, {});
     now.ready(whenServerReady);
 
-    function sendEventToServer(xStruct, callback) {
+    function sendEventToServer(txStruct, callback) {
         // have to do this assignment here, when we know the server is ready
-        xStruct.sender = clientId;
-        Logger.log('xStruct', xStruct, true);
+        txStruct.sender = clientId;
+        Logger.log('txStruct', txStruct, true);
 
         if (callback) {
-            now.eventClientToServer(xStruct, function (rStruct) {
+            now.eventClientToServer(txStruct, function (rxStruct) {
                 /*
-                rStruct schema for reference
-                var rStruct = {
-                    event: xStruct.event,
-                    kind: xStruct.kind,
-                    sender: xStruct.sender,
+                rxStruct schema for reference
+                var rxStruct = {
+                    event: txStruct.event,
+                    kind: txStruct.kind,
+                    sender: txStruct.sender,
                     error: error,
                     data: result
                 };
                 */
 
                 var succeeded = true;
-                if (rStruct.error) succeeded = false;
+                if (rxStruct.error) succeeded = false;
 
                 // provides success or failure notice back to caller
-                callback(succeeded, rStruct.error);
+                callback(succeeded, rxStruct.error);
 
                 if (succeeded) {
                     // the server does not send the event back to us, which would be wasteful
                     // so in the callback, we fake it by sending the event through the same place it would have gone if it came from the server
                     // end result is all clients get the event around the same time
-                    // set a flag so things can detect this was a locally initiated event, if they want
-                    receiveEventFromServer(rStruct.event, rStruct.data, clientId);
+                    receiveEventFromServer(rxStruct.event, rxStruct.data, clientId);
                 }
             });
         } else {
-            now.eventClientToServer(xStruct);
+            now.eventClientToServer(txStruct);
         }
     }
 
     function receiveEventFromServer(eventName, data, senderClientId) {
+        // set isRemoteEvent flag so things can detect this was a locally initiated event, if they want
         var isRemoteEvent = senderClientId != clientId;
         Pubsub.publish(eventName, data, isRemoteEvent, senderClientId);
     }
@@ -78,7 +78,7 @@ function (NowInit, CallbackQueue, Config, Pubsub, Logger) {
     function initiateEvent(eventName, eventKind, dataStructure, callback) {
         dataStructure = dataStructure || {};
 
-        var xStruct = {
+        var txStruct = {
             event: eventName,
             kind: eventKind,
             data: dataStructure
@@ -87,11 +87,11 @@ function (NowInit, CallbackQueue, Config, Pubsub, Logger) {
         if (!isReady) {
 
             callbackQueue.addToQueue(function () {
-                sendEventToServer(xStruct, callback);
+                sendEventToServer(txStruct, callback);
             });
 
         } else {
-            sendEventToServer(xStruct, callback);
+            sendEventToServer(txStruct, callback);
         }
     }
 

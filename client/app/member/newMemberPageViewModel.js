@@ -2,7 +2,7 @@
 // (c) Hugh Anderson - https://github.com/hughanderson4/smartjs
 // License: MIT (http://www.opensource.org/licenses/mit-license.php)
 
-// the newMemberPageViewModel module binds to the member signup page of the SPA
+// the newMemberPageViewModel module binds to the member signup page
 // this module returns a static object
 
 define([
@@ -30,7 +30,6 @@ define([
     function save() {
         errorMessages.removeAll();
         checkingMemberName(true);
-        // hooray! this line was added as the result of unit testing!
         goodMemberName(false);
 
         // courtesy to trim it before submitting to validation layer

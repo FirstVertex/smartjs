@@ -44,12 +44,7 @@ define([
         return LocalStorage.hasLocalMember() ? LocalStorage.getLocalMember().memberName : null;
     }
 
-    // event handlers
-    function onTopicAdded(topicDto) {
-        var newTopicVM = new TopicViewModel(topicDto.topicName);
-        topics.unshift(newTopicVM);
-    }
-
+    // event handlers    
     function onTopicPageLoad() {
         loadingTopics(true);
         // the name of myself when in topicWatcher group doesn't matter, just needs to be truthy
@@ -75,12 +70,15 @@ define([
         });
         if (topicVm) {
             topicVm.memberCount(dto.memberCount);
+        } else {
+            topicVm = new TopicViewModel(dto.topicName, dto.memberCount);
+            topics.unshift(topicVm);
         }
     }
 
     // subscriptions
-    Pubsub.subscribe('topic.new', onTopicAdded);
     Pubsub.subscribe('topic.list', onUpdateTopicList);
+    Pubsub.subscribe('topic.new', onUpdateTopicCount);
     Pubsub.subscribe('topic.count', onUpdateTopicCount);
     Pubsub.subscribe('topic.view', onTopicPageLoad);
     

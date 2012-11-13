@@ -56,8 +56,7 @@ define([
     var topicViewTimer = false;
     function publishTopicView() {
         if (!topicViewTimer) {
-            topicViewTimer = true;
-            setTimeout(function () {
+            topicViewTimer = setTimeout(function () {
                 topicViewTimer = false;
             }, 500);
             Pubsub.publish('topic.view');
@@ -81,10 +80,13 @@ define([
     window.addEventListener('hashchange', onHashChanged, false);
 
     // these are the 2 possible events fired by bootstrap
-    Pubsub.subscribe('member.new', gotoTopicList);
     Pubsub.subscribe('member.load', gotoTopicList);
-
     Pubsub.subscribe('member.none', gotoNewMember);
+
+    // fired at the end of new member creation process
+    Pubsub.subscribe('member.new', gotoTopicList);
+
+    // fired by selecting a topic from the topic list
     Pubsub.subscribe('topic.select', gotoChatRoom);
 
     // todo: 'error.redirect' subscriber, goto errorPage

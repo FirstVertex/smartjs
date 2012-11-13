@@ -2,7 +2,7 @@
 // (c) Hugh Anderson - https://github.com/hughanderson4/smartjs
 // License: MIT (http://www.opensource.org/licenses/mit-license.php)
 
-// the chatRoomViewModel module binds to the chatRoom page of the SPA
+// the chatRoomViewModel module binds to the chatRoom page
 // this module returns a static object
 
 define([
@@ -115,7 +115,7 @@ define([
             sender = findMemberViewModel(senderClientId);
         }
         if (sender) {
-            chatMessages.unshift({
+            chatMessages.push({
                 memberName: sender.memberName,
                 words: chatData.words
             });
