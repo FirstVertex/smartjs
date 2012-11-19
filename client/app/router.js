@@ -70,7 +70,7 @@ define([
     });
 
     function onHashChanged(event) {
-        var oldHash = '#' + event.oldURL.split('#')[1];
+        if (!event || !event.newURL) return;
         var newHash = '#' + event.newURL.split('#')[1];
 
         if (newHash === Pages.getPageSelector(Pages.topicList)) {
