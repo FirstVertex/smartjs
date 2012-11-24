@@ -12,8 +12,9 @@ define([
     'knockout',
     'util/pubsub',
     'util/logger',
-    'jquery'
-], function (ChatMemberViewModel, Server, GroupContext, Ko, Pubsub, Logger, Jquery) {
+    'jquery',
+    'underscore'
+], function (ChatMemberViewModel, Server, GroupContext, Ko, Pubsub, Logger, Jquery, Underscore) {
     Logger.log('chatRoomViewModel line 1');
     
         // identifies me
@@ -71,7 +72,7 @@ define([
 
     function findMemberViewModel(clientId) {
         var userList = members();
-        return _.find(userList, function (user) {
+        return Underscore.find(userList, function (user) {
             return user.clientId === clientId;
         });
     }
@@ -92,7 +93,7 @@ define([
         var cutIndex = -1;
         var userList = members();
 
-        _.find(userList, function (user, index) {
+        Underscore.find(userList, function (user, index) {
             var found = user.clientId === exitClientId;
             if (found) { cutIndex = index; }
             return found;
@@ -135,7 +136,7 @@ define([
     function onGroupMembers(memberDtoWrapper) {
         if (memberDtoWrapper.topicName !== roomName()) return;
 
-        var memberVms = _.map(memberDtoWrapper.memberList, function (dto) {
+        var memberVms = Underscore.map(memberDtoWrapper.memberList, function (dto) {
             return new ChatMemberViewModel(dto.memberName, dto.clientId, dto.clientId === localClientId);
         });
 
