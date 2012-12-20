@@ -16,9 +16,8 @@ define([
     'util/logger'
 ], function (TopicViewModel, AddTopicViewModel, LocalStorage, GroupContext, Ko, Und, Pubsub, Logger) {
 
-    var
-        // special group that gets the count of other groups
-        topicSubscriberGroup = 'topicWatchers',
+    // special group that gets the count of other groups
+    var topicSubscriberGroup = 'topicWatchers',
         // list binder
         topics = Ko.observableArray(),
         // feedback
@@ -29,11 +28,11 @@ define([
     // functionality
     function pickTopic(topicViewModel) {
         enteringChatRoom(true);
-        var roomName = topicViewModel.topicName();
-        GroupContext.joinGroup(localMemberName(), roomName);
-        var dto = {
-            topicName: roomName
-        };
+        var roomName = topicViewModel.topicName(),
+            dto = {
+                topicName: roomName
+            };
+        GroupContext.joinGroup(LocalStorage.localMemberName(), roomName);
         // causes router to change page
         Pubsub.publish('topic.select', dto);
         enteringChatRoom(false);
@@ -58,14 +57,14 @@ define([
     function onUpdateTopicList(topicDtos) {
         Logger.log('topicDtos', topicDtos, true);
         var newTopicVMs = Und.map(topicDtos, function (dto) {
-            return new TopicViewModel(dto.topicName, dto.memberCount)
+            return new TopicViewModel(dto.topicName, dto.memberCount);
         });
         topics(newTopicVMs);
     }
 
     function onUpdateTopicCount(dto) {
-        var topicVms = topics();
-        var topicVm = Und.find(topicVms, function (vm) {
+        var topicVms = topics(),
+            topicVm = Und.find(topicVms, function (vm) {
             return vm.topicName() === dto.topicName;
         });
         if (topicVm) {

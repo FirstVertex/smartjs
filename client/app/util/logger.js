@@ -11,7 +11,7 @@ define([
 ], function (Config, Util) {
     var showMessages = Config.showConsoleMessages;
 
-    function log (message, obj, showCurrentFunction) {
+    function log(message, obj, showCurrentFunction) {
         if (!showMessages || !console) return;
 
         var formattedMessage = showCurrentFunction ?

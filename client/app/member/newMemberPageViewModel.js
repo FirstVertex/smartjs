@@ -12,9 +12,8 @@ define([
     'data/schema'
 ], function (DataContext, Jquery, Ko, Schema) {
 
-    
-    var // bind to UI textbox
-        memberName = Ko.observable(''),
+    // bind to UI textbox
+    var memberName = Ko.observable(''),
         // validation
         checkingMemberName = Ko.observable(false),
         goodMemberName = Ko.observable(false),
@@ -33,10 +32,10 @@ define([
         goodMemberName(false);
 
         // courtesy to trim it before submitting to validation layer
-        var newMemberName = Jquery.trim(memberName());
-        memberName(newMemberName);
+        var newMemberName = Jquery.trim(memberName()),
+            dto = Schema.member.create(newMemberName);
 
-        var dto = Schema.member.create(newMemberName);
+        memberName(newMemberName);
 
         if (!Schema.member.validate(dto, errorMessages)) {
             checkingMemberName(false);

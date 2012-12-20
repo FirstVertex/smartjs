@@ -13,9 +13,8 @@ define([
     'data/schema'
 ], function (DataContext, Jquery, Ko, Pubsub, Schema) {
     
-    var
-        // binded to ui
-        newTopicName = Ko.observable(''),
+    // binded to ui
+    var newTopicName = Ko.observable(''),
         isVisible = Ko.observable(false),
 
         // feedback
@@ -38,10 +37,10 @@ define([
         checkingTopicName(true);
 
         // courtesy to trim it before submitting to validation layer
-        var topicName = Jquery.trim(newTopicName());
-        newTopicName(topicName);
+        var topicName = Jquery.trim(newTopicName()),
+            dto = Schema.topic.create(topicName);
 
-        var dto = Schema.topic.create(topicName);
+        newTopicName(topicName);
 
         if (!Schema.topic.validate(dto, errorMessages)) {
             checkingTopicName(false);

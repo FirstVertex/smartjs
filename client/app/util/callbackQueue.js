@@ -11,7 +11,7 @@ define(function () {
         for (var i = 0; i < callbacks.length; i++) {
             callbacks[i]();
         }
-    }    
+    }
 
     function callbackQueue() {
         var self = this;
@@ -25,7 +25,7 @@ define(function () {
             } else {
                 self.readyCalls.push(callback);
             }
-        }
+        };
 
         self.playback = function () {
             self.isReady = true;
@@ -38,12 +38,12 @@ define(function () {
                     runCallbacks(callbacks);
                 }
             }
-        }
+        };
 
         self.startQueueing = function () {
             self.isReady = false;
-        }
-    };
+        };
+    }
 
     return callbackQueue;
 });

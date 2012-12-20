@@ -12,7 +12,7 @@ define([
         var self = this;
         self.topicName = Ko.observable(topicName);
         self.memberCount = Ko.observable(memberCount || 0);
-    };
+    }
 
     return topicViewModel;
 });

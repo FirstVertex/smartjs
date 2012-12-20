@@ -87,7 +87,9 @@ require([
     Jquery.extend(Mobile, {
         ajaxEnabled: false,
         showLoadMsg: false,
-        hashListeningEnabled: false,
+        ignoreContentEnabled: true,
+        // this makes it impossible to use the back button!
+        // hashListeningEnabled: false,
         pushStateEnabled: false
     });
 });

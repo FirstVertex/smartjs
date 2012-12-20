@@ -11,16 +11,16 @@ define([
     'util/pubsub',
     'util/logger'
 ], function (Jquery, Pubsub, Logger) {
-        
+       
     function resetHeight() {
-        var headerSelector = 'div.ui-page-active div[data-role="header"]',
-            contentSelector = 'div.ui-page-active div[data-role="content"]',
-            footerSelector = 'div.ui-page-active div[data-role="footer"]',
+        var headerSelector = 'div.ui-page-active > div[data-role="header"]',
+            contentSelector = 'div.ui-page-active > div[data-role="content"]',
+            footerSelector = 'div.ui-page-active > div[data-role="footer"]',
             headerHeight = Jquery(headerSelector).outerHeight() || 0,
             content = Jquery(contentSelector),
-            contentHeight = content.outerHeight() || 0,
             footerHeight = Jquery(footerSelector).outerHeight() || 0,
-            chromeHeight = headerHeight + footerHeight,
+            fudgeFactor = 1,
+            chromeHeight = headerHeight + footerHeight - fudgeFactor,
             winHeight = Jquery(window).height(),
             fullHeight = winHeight - chromeHeight + 'px';
 

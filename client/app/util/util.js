@@ -15,8 +15,8 @@ define([
         var c = arguments;
         return this.replace(/\{(\d+)\}/g,
             function (h, g) {
-                return "undefined" !== typeof c[g] ? c[g] : h
-            })
+                return "undefined" !== typeof c[g] ? c[g] : h;
+            });
     };
 
     function inspectObject(obj) {
@@ -26,10 +26,11 @@ define([
 
     function randomString(len) {
         if (!len) len = 10;
-        var alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        var alar = alphabet.split('');
+        var alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+            alar = alphabet.split(''),
+            randy;
         alar = Und.shuffle(alar);
-        var randy = alar.join('');
+        randy = alar.join('');
         return randy.substring(0, len);
     }
 
@@ -37,10 +38,12 @@ define([
     function getParameters() {
         var searchString = window.location.search.substring(1),
             params = searchString.split("&"),
-            hash = {};
+            hash = {},
+            i = 0,
+            val;
 
-        for (var i = 0; i < params.length; i++) {
-            var val = params[i].split("=");
+        for (i = 0; i < params.length; i++) {
+            val = params[i].split("=");
             hash[unescape(val[0])] = unescape(val[1]);
         }
         return hash;

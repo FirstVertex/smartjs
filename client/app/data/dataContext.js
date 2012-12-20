@@ -6,9 +6,8 @@
 // this module returns a static object
 
 define([
-    'server/server'],
-function (Server) {
-
+    'server/server'
+], function (Server) {
     var eventKind = 'data';
 
     function saveMember(memberData, callback) {

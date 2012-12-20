@@ -6,8 +6,8 @@
 // this module returns a static object
 
 define([
-    'server/server'],
-function (Server) {
+    'server/server'
+], function (Server) {
 
     // prevent redundant group join
     var currentGroupName = null,

@@ -90,8 +90,8 @@ define([
 
     function onChatroomLeave(leaveDto, isRemoteEvent, exitClientId) {
         if (leaveDto.topicName !== roomName()) return;
-        var cutIndex = -1;
-        var userList = members();
+        var cutIndex = -1,
+            userList = members();
 
         Underscore.find(userList, function (user, index) {
             var found = user.clientId === exitClientId;

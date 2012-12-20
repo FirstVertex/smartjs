@@ -11,9 +11,8 @@ define([
     'require',
     'jquery',
     'jqueryMobile',
-    'knockout',
-    'config'
-], function (Pages, Pubsub, require, Jquery, Mobile, Ko, Config) {
+    'knockout'
+], function (Pages, Pubsub, require, Jquery, Mobile, Ko) {
     
     function gotoPage(page) {
         Mobile.changePage(page.page);

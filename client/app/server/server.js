@@ -10,12 +10,12 @@ define([
     'util/callbackQueue',
     'config',
     'util/pubsub',
-    'util/logger'],
-function (NowInit, CallbackQueue, Config, Pubsub, Logger) {
-    var
-        isReady = false,
+    'util/logger'
+], function (NowInit, CallbackQueue, Config, Pubsub, Logger) {
+    var isReady = false,
         clientId = null,
-        callbackQueue = new CallbackQueue();
+        callbackQueue = new CallbackQueue(),
+        now = NowInit(Config.serverAddress, {});
 
     Logger.log('server module: serverAddress', Config.serverAddress);
 
@@ -27,7 +27,6 @@ function (NowInit, CallbackQueue, Config, Pubsub, Logger) {
         callbackQueue.playback();
     }
 
-    var now = NowInit(Config.serverAddress, {});
     now.ready(whenServerReady);
 
     function sendEventToServer(txStruct, callback) {
@@ -69,6 +68,7 @@ function (NowInit, CallbackQueue, Config, Pubsub, Logger) {
     function receiveEventFromServer(eventName, data, senderClientId) {
         // set isRemoteEvent flag so things can detect this was a locally initiated event, if they want
         var isRemoteEvent = senderClientId != clientId;
+        Logger.log('data', data, true);
         Pubsub.publish(eventName, data, isRemoteEvent, senderClientId);
     }
 

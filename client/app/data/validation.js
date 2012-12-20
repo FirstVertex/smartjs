@@ -10,7 +10,9 @@ define([
 ], function (Jquery) {
 
     function fail(message, errorMessages, fieldName) {
-        errorMessages && errorMessages.push(message.format(fieldName));
+        if (errorMessages) {
+            errorMessages.push(message.format(fieldName));
+        }
         return false;
     }
 

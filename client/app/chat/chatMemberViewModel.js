@@ -19,15 +19,15 @@ define([
         self.clientId = clientId;
         self.isLocalMember = isLocalMember;
 
-        var _isTyping = Ko.observable(false);
+        self._isTyping = Ko.observable(false);
         self.isTyping = Ko.computed({
             read: function () {
-                return _isTyping();
+                return self._isTyping();
             },
             write: function (value) {
-                var oldValue = _isTyping();
+                var oldValue = self._isTyping();
                 if (value === oldValue) return;
-                _isTyping(value);
+                self._isTyping(value);
 
                 if (self.isLocalMember) {
                     var dto = {
@@ -38,7 +38,7 @@ define([
             }
         });
 
-        // todo: is this needed? test it.  the screen for localmember and oldvalue/newvalue might be sufficient
+        // this is very useful, so don't delete it.  it's just a way to set without causing network traffic
         self.setTypingWithoutPublishing = function (value) {
             _isTyping(value);
         }

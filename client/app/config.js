@@ -11,17 +11,20 @@ define([
 ], function (Util) {
         
     var envs = {
-        dev: {
-            serverPort: 99,
-            localhost: '127.0.0.1',
-            // will be used in local android builds, ip of your machine
-            serverIP: '192.168.1.105'//'10.1.0.112'
-        },
-        prod: {
-            serverPort: 80,
-            serverName: 'smartjs.programico.com'
-        }
-    };
+	        dev: {
+	            serverPort: 99,
+	            localhost: '127.0.0.1',
+	            // will be used in local android builds, ip of your machine
+	            serverIP: '192.168.1.105'//'10.1.0.112'	
+	        },
+	        prod: {
+	            serverPort: 80,
+	            serverName: 'smartjs.programico.com'
+	        }
+	    },
+        isProd = false,
+        configs,
+        currentConfig;
 
     // see if a config was specified by a bulid script using uglify's --define
     // example usage is in /qa/builds/build.android.js
@@ -36,7 +39,7 @@ define([
         // the env to use if no other is specified
         envs.dev;
 
-    var isProd = envs.current === envs.prod;
+    isProd = envs.current === envs.prod;
 
     function getServerAddress(preferLocalHost) {
         var port = envs.current.serverPort == 80 ? '' : ':' + envs.current.serverPort,
@@ -45,24 +48,24 @@ define([
     }
 
     // all configurations used by the application
-    var configs = {
-            test: {
-                device: 'web',
-                serverAddress: getServerAddress(true),
-                showConsoleMessages: true,
-                isTest: true
-            },
-            web: {
-                device: 'web',
-                serverAddress: getServerAddress(true),
-                showConsoleMessages: true
-            },
-            android: {
-                device: 'android',
-                serverAddress: getServerAddress(false),
-                showConsoleMessages: true
-            }
-        };
+    configs = {
+        test: {
+            device: 'web',
+            serverAddress: getServerAddress(false),
+            showConsoleMessages: true,
+            isTest: true
+        },
+        web: {
+            device: 'web',
+            serverAddress: getServerAddress(false),
+            showConsoleMessages: true
+        },
+        android: {
+            device: 'android',
+            serverAddress: getServerAddress(false),
+            showConsoleMessages: true
+        }
+    };
 
     // the config to use if no other is specified
     configs.current = configs.web;
@@ -85,7 +88,7 @@ define([
     }
     
     // determine which configuration to use
-    var currentConfig = getBuildConfig() || getUrlConfig() || configs.current;
+    currentConfig = getBuildConfig() || getUrlConfig() || configs.current;
     // the config knows whether its in prod
     currentConfig.isProd = isProd;
     

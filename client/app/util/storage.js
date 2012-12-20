@@ -12,11 +12,11 @@ define([
     'util/util'
 ], function (Storage, Config, Pubsub, Util) {
 
-    var storagePrefix = Config.isTest ? Util.randomString() : '';
-    
-    var keys = {
-        MEMBER: 'member'
-    };
+    var storagePrefix = Config.isTest ? Util.randomString() : '',
+        keys = {
+            MEMBER: 'member'
+        },
+        localMember;
 
     function saveToDevice(key, value) {
         Storage.set(storagePrefix + key, value);
@@ -26,26 +26,28 @@ define([
         return Storage.get(storagePrefix + key, null);
     }
 
-    function hasKey(key) {
-        return lookup(key) != null;
+    //function hasKey(key) {
+    //    return lookup(key) !== null;
+    //}
+
+    function loadMember() {
+        return lookup(keys.MEMBER);
     }
 
-    function loadMember () {
-        return lookup(keys.MEMBER);
-    };
-
-    function saveMember (member) {
+    function saveMember(member) {
         saveToDevice(keys.MEMBER, member);
-    };
-
-    var localMember = loadMember();
+    }
 
     function getLocalMember() {
         return localMember;
     }
 
     function hasLocalMember() {
-        return localMember != null;
+        return localMember !== null;
+    }
+
+    function localMemberName() {
+        return hasLocalMember() ? getLocalMember().memberName : null;
     }
 
     // private methods
@@ -61,10 +63,13 @@ define([
         localMember = memberDto;
     }
 
+    localMember = loadMember();
+
     Pubsub.subscribe('member.new', onMemberCreated);
 
     return {
         getLocalMember: getLocalMember,
-        hasLocalMember: hasLocalMember
+        hasLocalMember: hasLocalMember,
+        localMemberName: localMemberName
     };
 });
