@@ -4651,7 +4651,7 @@ define('config',[
             serverPort: 99,
             localhost: '127.0.0.1',
             // will be used in local android builds, ip of your machine
-            serverIP: '10.1.0.112'
+            serverIP: '192.168.1.103'
         },
         prod: {
             serverPort: 80,
@@ -4701,7 +4701,7 @@ define('config',[
         };
 
     // the config to use if no other is specified
-    configs.current = configs.web;
+    configs.current = configs.android;
 
     // private functions
 
@@ -27223,7 +27223,7 @@ define('router',[
     });
 
     function onHashChanged(event) {
-        var oldHash = '#' + event.oldURL.split('#')[1];
+        if (!event || !event.newURL) return;
         var newHash = '#' + event.newURL.split('#')[1];
 
         if (newHash === Pages.getPageSelector(Pages.topicList)) {
