@@ -40,7 +40,7 @@ define([
 
         // this is very useful, so don't delete it.  it's just a way to set without causing network traffic
         self.setTypingWithoutPublishing = function (value) {
-            _isTyping(value);
+            self._isTyping(value);
         }
     };
 

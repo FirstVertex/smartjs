@@ -27,7 +27,7 @@ function processConnection(request) {
         }
     }
 
-    if (!handled) {
+    if (!handled && group) {
         // default handler
         console.log('handle generic group event=' + request.xStruct.event);
         group.now.eventServerToClient(request.xStruct.event, request.xStruct.data, request.xStruct.sender);
@@ -81,17 +81,26 @@ function onLeaveGroup(request, group) {
 }
 addEventHandler('group.removeMember', onLeaveGroup);
 
+function onChatMessage(request) {
+    LiveTopicList.cacheChatMessage(request.xStruct);
+    var group = request.xStruct.data.groupName ? Nowjs.getGroup(request.xStruct.data.groupName) : null;
+    if (group) {
+        group.now.eventServerToClient(request.xStruct.event, request.xStruct.data, request.xStruct.sender);
+    }
+}
+addEventHandler('chat.message', onChatMessage);
+
 function onTopicList(request) {
     var topicListDto = LiveTopicList.getTopicList();
     Util.processResponse(request, null, topicListDto);
 }
 addEventHandler('topic.list', onTopicList);
 
-function onTopicMembers(request) {
-    var topicMemberListDto = LiveTopicList.getTopicMemberList(request.xStruct.data.topicName);
-    Util.processResponse(request, null, topicMemberListDto);
+function onTopicInitialize(request) {
+    var topicInitDto = LiveTopicList.getTopicInitialData(request.xStruct.data.topicName);
+    Util.processResponse(request, null, topicInitDto);
 }
-addEventHandler('topic.members', onTopicMembers);
+addEventHandler('topic.initialize', onTopicInitialize);
 
 // interface for dataHandler to call when a topic is added, need to update cache
 function newTopicWasSaved(topicName) {
@@ -105,6 +114,7 @@ function newTopicWasSaved(topicName) {
 function broadcastToAll(message) {
     var everyone = Nowjs.getGroup('everyone');
     var dto = {
+        memberName: 'Server',
         words: message
     };
     console.log('broadcast message to all: ' + Util.inspectObject(dto));

@@ -52,11 +52,11 @@ define([
         Server.initiateEvent('topic.list', eventKind, null, callback);
     }
 
-    function getTopicMembers(topicName, callback) {
+    function initializeTopic(topicName, callback) {
         var dto = {
             topicName: topicName
         };
-        Server.initiateEvent('topic.members', eventKind, dto, callback);
+        Server.initiateEvent('topic.initialize', eventKind, dto, callback);
     }
 
     return {
@@ -65,6 +65,6 @@ define([
         publish: publish,
         getCurrentGroupName: getCurrentGroupName,
         listTopics: listTopics,
-        getTopicMembers: getTopicMembers
+        initializeTopic: initializeTopic
     };
 });

@@ -8,20 +8,34 @@
 var Util = require('./util'),
     MongoConnection = require('./mongoDataConnector'),
     topicCache = [],
-    watchGroupName = 'topicWatchers';
+    watchGroupName = 'topicWatchers',
+    maxCacheMessages = 5;
 
 function addTopicToCache(topicName) {
     if (topicName != watchGroupName) {
         var newTopic = {
             topicName: topicName,
-            memberList: []
+            memberList: [],
+            messageCache: []
         };
         topicCache.unshift(newTopic);
         return getTopicCountChangeDto(newTopic);
     }
     return null;
 }
-    
+
+function cacheChatMessage(xStruct) {
+    if (!xStruct || !xStruct.data || !xStruct.data.groupName) { return null; }
+    var topic = getCachedTopic(xStruct.data.groupName);
+    if (!topic) { return null; }
+
+    console.log('add chat message to group\'s messageCache: ' + Util.inspectObject(xStruct));
+    topic.messageCache.push(xStruct);
+    while (topic.messageCache.length > maxCacheMessages) {
+        topic.messageCache.shift();
+    }
+}
+
 function getTopicCountChangeDto(topic) {
     if (!topic || !topic.topicName) { return null; }
     var topicName = topic.topicName;
@@ -45,11 +59,12 @@ function getCachedTopic(topicName) {
     return null;
 }
 
-function getTopicMemberList(topicName) {
+function getTopicInitialData(topicName) {
     var topic = getCachedTopic(topicName);
     return {
         topicName: topicName,
-        memberList: topic ? topic.memberList : []
+        memberList: topic ? topic.memberList : [],
+        messageCache: topic ? topic.messageCache : []
     };
 }
 
@@ -117,9 +132,10 @@ MongoConnection.findAll('topics', null, function (error, result) {
 
 module.exports = {
     addTopicToCache: addTopicToCache,
+    cacheChatMessage: cacheChatMessage,
     addClient: addClient,
     removeClient: removeClient,
     getTopicList: getTopicList,
-    getTopicMemberList: getTopicMemberList,
+    getTopicInitialData: getTopicInitialData,
     watchGroupName: watchGroupName
 };

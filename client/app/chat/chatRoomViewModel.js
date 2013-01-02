@@ -49,6 +49,7 @@ define([
         var words = Jquery.trim(currentChatInput());
         if (!words.length) return;
         var chatDto = {
+            memberName: localMemberViewModel().memberName,
             words: currentChatInput()
         };
         GroupContext.publish('chat.message', chatDto);
@@ -63,7 +64,7 @@ define([
         chatMessages.removeAll();
 
         loadingMembers(true);
-        GroupContext.getTopicMembers(newRoomName, function () {
+        GroupContext.initializeTopic(newRoomName, function () {
             loadingMembers(false);
         });
     }
@@ -106,20 +107,14 @@ define([
 
     function onChatroomData(chatData, isRemoteEvent, senderClientId) {
         var sender;
-        if (senderClientId == -1) {
-            // make a Mock for the Server VM
-            sender = {
-                memberName: 'Server',
-                setTypingWithoutPublishing: function () { }
-            };
-        } else {
+        if (senderClientId !== -1) {
             sender = findMemberViewModel(senderClientId);
         }
+        chatMessages.push({
+            memberName: chatData.memberName,
+            words: chatData.words
+        });
         if (sender) {
-            chatMessages.push({
-                memberName: sender.memberName,
-                words: chatData.words
-            });
             sender.setTypingWithoutPublishing(false);
         }
     }
@@ -133,21 +128,28 @@ define([
         }
     }
 
-    function onGroupMembers(memberDtoWrapper) {
-        if (memberDtoWrapper.topicName !== roomName()) return;
+    function onTopicInitialize(topicDto) {
+        if (topicDto.topicName !== roomName()) return;
 
-        var memberVms = Underscore.map(memberDtoWrapper.memberList, function (dto) {
+        var memberVms = Underscore.map(topicDto.memberList, function (dto) {
             return new ChatMemberViewModel(dto.memberName, dto.clientId, dto.clientId === localClientId);
-        });
+        }), i;
 
-        Logger.log('memberDtoWrapper', memberDtoWrapper, true);
+        Logger.log('topicDto', topicDto, true);
         Logger.log('memberVms', memberVms);
 
         members(memberVms);
+
+        if (!topicDto.messageCache || ! topicDto.messageCache.length) return;
+
+        // get the chatMessages out of the array of xStruct in messageCache
+        for (i = 0; i < topicDto.messageCache.length; i++) {
+            onChatroomData(topicDto.messageCache[i].data, true, topicDto.messageCache[i].sender);
+        }
     }
 
     // subscriptions
-    Pubsub.subscribe('topic.members', onGroupMembers);
+    Pubsub.subscribe('topic.initialize', onTopicInitialize);
     Pubsub.subscribe('group.addMember', onChatroomJoin);
     Pubsub.subscribe('group.removeMember', onChatroomLeave);
     Pubsub.subscribe('chat.message', onChatroomData);
