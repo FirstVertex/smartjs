@@ -1,7 +1,7 @@
 The SmartJs Realtime Mobile Application Framework
 =======
 
-SmartJs is an acronym that stands for
+SmartJs is a recursive acronym that stands for
 
 **S**OLID **M**VVM **A**MD **R**eal **T**ime **j**QueryMobile **S**PA
 
