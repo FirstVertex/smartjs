@@ -27,7 +27,7 @@ Technologies
 * [mongoDB](http://www.mongodb.org/) with the [node-mongodb-native](https://github.com/mongodb/node-mongodb-native) driver - implement persistence
 * [Cordova/Phonegap](http://phonegap.com/) - target 99% devices
 * [Lodash](http://lodash.com/) - implement model projections
-* [Jasmine](http://pivotal.github.com/jasmine/) - implement Unit Testing
+* [Jasmine](https://jasmine.github.io/) - implement Unit Testing
 
 Demo App Features
 -------
